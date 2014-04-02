@@ -17,8 +17,13 @@
 
     // Configure the view.
     SKView * skView = (SKView *)self.view;
+    
+#ifdef DEBUG
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
+    skView.showsDrawCount = YES;
+    skView.showsPhysics = YES;
+#endif
     
     // Create and configure the scene.
     SKScene * scene = [CJMyScene sceneWithSize:skView.bounds.size];

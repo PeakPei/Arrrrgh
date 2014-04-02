@@ -93,7 +93,6 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 - (void)createRock {
     SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
-    rock.anchorPoint = CGPointMake(0.0, 0.0);
     
     NSInteger lowerBound = 0;
     NSInteger upperBound = 320;
