@@ -44,9 +44,11 @@
 
 - (void)createRock {
     SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
-    rock.position = CGPointMake(CGRectGetMidX(self.frame),
-                                CGRectGetMidY(self.frame));
-//    ship.size = CGSizeMake(50.0, 50.0);
+    rock.position = CGPointMake(CGRectGetMidX(self.frame), 560.0);
+    
+    SKAction *moveDown = [SKAction moveByX:0.0 y:-560.0 duration:3.0];
+    [rock runAction:moveDown];
+    
     [self addChild:rock];
 }
 
