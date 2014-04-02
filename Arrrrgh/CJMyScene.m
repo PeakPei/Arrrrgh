@@ -15,13 +15,20 @@
         
         self.backgroundColor = [SKColor colorWithRed:0.16 green:0.65 blue:0.84 alpha:1.0];
         [self createShip];
-        [self createRock];
     }
     return self;
 }
 
 -(void)update:(CFTimeInterval)currentTime {
-    /* Called before each frame is rendered */
+    
+    NSInteger lowerBound = 0;
+    NSInteger upperBound = 200;
+    NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
+    
+    if (rndValue == 3) {
+        [self createRock];
+    }
+
 }
 
 #pragma mark - UIResponder
@@ -44,14 +51,14 @@
 
 - (void)createRock {
     SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
-    
+    rock.anchorPoint = CGPointMake(0.0, 0.0);
     NSInteger lowerBound = 0;
     NSInteger upperBound = 320;
     NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
     
     rock.position = CGPointMake(rndValue, 560.0);
     
-    SKAction *moveDown = [SKAction moveByX:0.0 y:-560.0 duration:3.0];
+    SKAction *moveDown = [SKAction moveByX:0.0 y:(-560.0 - rock.size.height) duration:3.0];
     [rock runAction:moveDown];
     
     [self addChild:rock];
