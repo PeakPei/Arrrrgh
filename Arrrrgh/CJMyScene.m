@@ -8,6 +8,13 @@
 
 #import "CJMyScene.h"
 
+@interface CJMyScene () {
+    
+    SKNode *_ship;
+}
+
+@end
+
 @implementation CJMyScene
 
 -(id)initWithSize:(CGSize)size {    
@@ -36,6 +43,19 @@
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
+        
+        CGFloat angle;
+        if (location.x < CGRectGetMidX(self.frame)) {
+            // detected left side touch
+            angle = M_PI/4.0;
+        }
+        else {
+            angle = -M_PI/4.0;
+        }
+        SKAction *rotate     = [SKAction rotateByAngle:angle duration:0.5];
+        SKAction *undoRotate = [SKAction rotateByAngle:-angle duration:0.5];
+        SKAction *sequence   = [SKAction sequence:@[rotate, undoRotate]];
+        [_ship runAction:sequence];
     }
 }
 
@@ -47,6 +67,7 @@
                                 CGRectGetMidY(self.frame) - 150.0);
     ship.size = CGSizeMake(100.0, 100.0);
     [self addChild:ship];
+    _ship = ship;
 }
 
 - (void)createRock {
