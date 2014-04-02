@@ -14,6 +14,9 @@ static const uint32_t rockCategory =  0x1 << 1;
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
     SKNode *_ship;
+    SKNode *_world;
+    
+    BOOL _gameOver;
 }
 
 @end
@@ -26,6 +29,10 @@ static const uint32_t rockCategory =  0x1 << 1;
         self.backgroundColor = [SKColor colorWithRed:0.16 green:0.65 blue:0.84 alpha:1.0];
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
+        
+        _world = [SKNode node];
+        [self addChild:_world];
+        
         [self createShip];
     }
     return self;
@@ -33,14 +40,15 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 -(void)update:(CFTimeInterval)currentTime {
     
-    NSInteger lowerBound = 0;
-    NSInteger upperBound = 200;
-    NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
-    
-    if (rndValue == 3) {
-        [self createRock];
+    if (!_gameOver) {
+        NSInteger lowerBound = 0;
+        NSInteger upperBound = 200;
+        NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
+        
+        if (rndValue == 3) {
+            [self createRock];
+        }
     }
-
 }
 
 #pragma mark - SKPhysicsContactDelegate
@@ -49,27 +57,34 @@ static const uint32_t rockCategory =  0x1 << 1;
 {
     if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
         [_ship removeFromParent];
+        [self gameOver];
     }
 }
 
 #pragma mark - UIResponder
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
         
         CGFloat angle;
+        CGFloat distance = 20.0;
         if (location.x < CGRectGetMidX(self.frame)) {
             // detected left side touch
             angle = M_PI/4.0;
         }
         else {
             angle = -M_PI/4.0;
+            distance = -distance;
         }
         SKAction *rotate     = [SKAction rotateByAngle:angle duration:0.5];
         SKAction *undoRotate = [SKAction rotateByAngle:-angle duration:0.5];
         SKAction *sequence   = [SKAction sequence:@[rotate, undoRotate]];
         [_ship runAction:sequence];
+        
+        // move the world
+        SKAction *moveAcross = [SKAction moveByX:distance y:0.0 duration:0.25];
+        [_world runAction:moveAcross];
     }
 }
 
@@ -93,6 +108,7 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 - (void)createRock {
     SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
+    rock.name = @"rock";
     
     NSInteger lowerBound = 0;
     NSInteger upperBound = 320;
@@ -107,7 +123,27 @@ static const uint32_t rockCategory =  0x1 << 1;
     SKAction *moveDown = [SKAction moveByX:0.0 y:(-560.0 - rock.size.height) duration:3.0];
     [rock runAction:moveDown];
     
-    [self addChild:rock];
+    [_world addChild:rock];
+}
+
+- (void)gameOver {
+
+    _gameOver = YES;
+    self.paused = YES;
+//    [self restartButton];
+}
+
+- (void)restartButton {
+    SKLabelNode *node = [SKLabelNode labelNodeWithFontNamed:@"Helvetica"];
+    node.name = @"restart";
+    node.text = @"Restart";
+    node.fontSize = 20.0;
+    node.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    [self addChild:node];
+    
+//    UIButton *restartButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [restartButton setTitle:@"Restart" forState:UIControlStateNormal];
+//    [self.view addSubview:restartButton];
 }
 
 @end
