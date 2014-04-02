@@ -44,7 +44,12 @@
 
 - (void)createRock {
     SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
-    rock.position = CGPointMake(CGRectGetMidX(self.frame), 560.0);
+    
+    NSInteger lowerBound = 0;
+    NSInteger upperBound = 320;
+    NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
+    
+    rock.position = CGPointMake(rndValue, 560.0);
     
     SKAction *moveDown = [SKAction moveByX:0.0 y:-560.0 duration:3.0];
     [rock runAction:moveDown];
