@@ -8,10 +8,13 @@
 
 #import "CJViewController.h"
 #import "CJMyScene.h"
+#import "ARAudioRecognizer.h"
 
-@interface CJViewController () {
+@interface CJViewController () <ARAudioRecognizerDelegate> {
     
     UIButton *_restartButton;
+    ARAudioRecognizer *_audioRecognizer;
+    CJMyScene *_scene;
 }
 
 @end
@@ -21,6 +24,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    _audioRecognizer = [[ARAudioRecognizer alloc] init];
+    _audioRecognizer.delegate = self;
 
     // Configure the view.
     SKView * skView = (SKView *)self.view;
@@ -33,12 +39,12 @@
 #endif
     
     // Create and configure the scene.
-    CJMyScene *scene = [CJMyScene sceneWithSize:skView.bounds.size];
-    scene.scaleMode = SKSceneScaleModeAspectFill;
-    scene.vc = self;
+    _scene = [CJMyScene sceneWithSize:skView.bounds.size];
+    _scene.scaleMode = SKSceneScaleModeAspectFill;
+    _scene.vc = self;
     
     // Present the scene.
-    [skView presentScene:scene];
+    [skView presentScene:_scene];
 }
 
 - (BOOL)shouldAutorotate
@@ -65,10 +71,21 @@
     [self restartButton];
 }
 
+#pragma mark - ARAudioRecognizerDelegate
+
+- (void)audioRecognized:(ARAudioRecognizer *)recognizer {
+    NSLog(@"lowpass %f", recognizer.lowPassResults);
+    _scene.blowLevel = recognizer.lowPassResults;
+}
+
+#pragma mark - Internal Methods
+
 - (void)handleRestart:(id)sender {
     
-    [self viewDidLoad];
     [_restartButton removeFromSuperview];
+//    _audioRecognizer = nil;
+    
+    [self viewDidLoad];
 }
 
 - (void)restartButton {

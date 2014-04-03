@@ -12,5 +12,6 @@
 @interface CJMyScene : SKScene
 
 @property (nonatomic) CJViewController *vc;
+@property (nonatomic) CGFloat blowLevel;
 
 @end

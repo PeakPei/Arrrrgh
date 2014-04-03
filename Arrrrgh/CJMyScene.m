@@ -47,6 +47,9 @@ static const uint32_t rockCategory =  0x1 << 1;
         if (rndValue == 3) {
             [self createRock];
         }
+        
+        // propel ship based on blow level
+        // -- make the world move down faster
     }
 }
 
