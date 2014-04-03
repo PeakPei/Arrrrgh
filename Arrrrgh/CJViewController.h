@@ -11,4 +11,6 @@
 
 @interface CJViewController : UIViewController
 
+- (void)showGameOver;
+
 @end

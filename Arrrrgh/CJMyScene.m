@@ -16,7 +16,7 @@ static const uint32_t rockCategory =  0x1 << 1;
     SKNode *_ship;
     SKNode *_world;
     
-    BOOL _gameOver;
+    BOOL _isGameOver;
 }
 
 @end
@@ -31,8 +31,7 @@ static const uint32_t rockCategory =  0x1 << 1;
         self.physicsWorld.contactDelegate = self;
         
         _world = [SKNode node];
-        [self addChild:_world];
-        
+        [self addChild:_world];        
         [self createShip];
     }
     return self;
@@ -40,7 +39,7 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 -(void)update:(CFTimeInterval)currentTime {
     
-    if (!_gameOver) {
+    if (!_isGameOver) {
         NSInteger lowerBound = 0;
         NSInteger upperBound = 200;
         NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
@@ -56,7 +55,6 @@ static const uint32_t rockCategory =  0x1 << 1;
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
     if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
-        [_ship removeFromParent];
         [self gameOver];
     }
 }
@@ -127,23 +125,10 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 - (void)gameOver {
-
-    _gameOver = YES;
+    [_ship removeFromParent];
+    _isGameOver = YES;
     self.paused = YES;
-//    [self restartButton];
-}
-
-- (void)restartButton {
-    SKLabelNode *node = [SKLabelNode labelNodeWithFontNamed:@"Helvetica"];
-    node.name = @"restart";
-    node.text = @"Restart";
-    node.fontSize = 20.0;
-    node.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
-    [self addChild:node];
-    
-//    UIButton *restartButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [restartButton setTitle:@"Restart" forState:UIControlStateNormal];
-//    [self.view addSubview:restartButton];
+    [self.vc showGameOver];
 }
 
 @end
