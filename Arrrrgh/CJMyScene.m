@@ -31,7 +31,7 @@ static const uint32_t rockCategory =  0x1 << 1;
         self.physicsWorld.contactDelegate = self;
         
         _world = [SKNode node];
-        [self addChild:_world];        
+        [self addChild:_world];
         [self createShip];
     }
     return self;

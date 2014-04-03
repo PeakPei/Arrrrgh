@@ -78,7 +78,7 @@
                                       320, 100);
     [_restartButton setTitle:@"Restart" forState:UIControlStateNormal];
     [_restartButton setTintColor:[UIColor whiteColor]];
-    _restartButton.titleLabel.font = [UIFont systemFontOfSize:20.0];
+    _restartButton.titleLabel.font = [UIFont systemFontOfSize:25.0];
     
     [_restartButton addTarget:self action:@selector(handleRestart:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_restartButton];
