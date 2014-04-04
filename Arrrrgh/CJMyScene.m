@@ -8,13 +8,20 @@
 
 #import "CJMyScene.h"
 
+#import "CJScrollingNode.h"
+
 static const uint32_t shipCategory =  0x1 << 0;
 static const uint32_t rockCategory =  0x1 << 1;
+
+#define kCanalScrollingSpeed 3
 
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
     SKNode *_ship;
     SKNode *_world;
+    
+    CJScrollingNode *_canalLeft;
+    CJScrollingNode *_canalRight;
     
     BOOL _isGameOver;
 }
@@ -31,6 +38,7 @@ static const uint32_t rockCategory =  0x1 << 1;
         self.physicsWorld.contactDelegate = self;
         
         [self createWorld];
+        [self createCanal];
         [self createShip];
     }
     return self;
@@ -50,6 +58,9 @@ static const uint32_t rockCategory =  0x1 << 1;
         if (_world.speed > 0.0) {
             _world.speed = _world.speed - 0.0005;
         }
+        
+        [_canalLeft update:currentTime];
+        [_canalRight update:currentTime];
     }
 }
 
@@ -102,10 +113,36 @@ static const uint32_t rockCategory =  0x1 << 1;
     [self addChild:_world];
 }
 
+- (void)createCanal {
+//    floor = [SKScrollingNode scrollingNodeWithImageNamed:@"floor" inContainerWidth:WIDTH(self)];
+//    [floor setScrollingSpeed:FLOOR_SCROLLING_SPEED];
+//    [floor setAnchorPoint:CGPointZero];
+//    [floor setName:@"floor"];
+//    [floor setPhysicsBody:[SKPhysicsBody bodyWithEdgeLoopFromRect:floor.frame]];
+//    floor.physicsBody.categoryBitMask = floorBitMask;
+//    floor.physicsBody.contactTestBitMask = birdBitMask;
+//    [self addChild:floor];
+
+    CJScrollingNode *node = [CJScrollingNode scrollingNodeWithImageNamed:@"canal" inContainerHeight:self.frame.size.height atPosX:0.0];
+    node.scrollingSpeed = kCanalScrollingSpeed;
+    node.anchorPoint = CGPointZero;
+    node.name = @"canalLeft";
+//    node.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:node.frame];
+    [self addChild:node];
+    _canalLeft = node;
+    
+    CJScrollingNode *node2 = [CJScrollingNode scrollingNodeWithImageNamed:@"canal_right" inContainerHeight:self.frame.size.height atPosX:298.0];
+    node2.scrollingSpeed = kCanalScrollingSpeed;
+    node2.anchorPoint = CGPointZero;
+    node2.name = @"canalRight";
+    [self addChild:node2];
+    _canalRight = node2;
+}
+
 - (void)createShip {
     SKSpriteNode *ship = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
     ship.position = CGPointMake(CGRectGetMidX(self.frame),
-                                CGRectGetMidY(self.frame) - 150.0);
+                                CGRectGetMidY(self.frame) - 50.0);
     ship.size = CGSizeMake(100.0, 100.0);
     
     ship.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:50.0];
