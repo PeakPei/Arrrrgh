@@ -19,6 +19,8 @@
 #define AR_AUDIO_RECOGNIZER_FREQUENCY_HIGH 0.02f
 #define AR_AUDIO_RECOGNIZER_FREQUENCY_DEFAULT AR_AUDIO_RECOGNIZER_FREQUENCY_MODERATE
 
+#define AR_AUDIO_LOWPASS_THRESHOLD 0.90f
+
 @interface ARAudioRecognizer : NSObject
 
 @property (nonatomic, weak) id <ARAudioRecognizerDelegate> delegate;

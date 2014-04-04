@@ -92,7 +92,7 @@
         [self.delegate audioLevelUpdated:self averagePower:[self.recorder averagePowerForChannel:0] peakPower:[self.recorder peakPowerForChannel:0]];
     }
     
-	if (self.lowPassResults > 0.95 && self.delegate && [self.delegate respondsToSelector:@selector(audioRecognized:)]) {
+	if (self.lowPassResults > AR_AUDIO_LOWPASS_THRESHOLD && self.delegate && [self.delegate respondsToSelector:@selector(audioRecognized:)]) {
         [self.delegate audioRecognized:self];
         _lowPassResults = 0.0f;
     }

@@ -30,14 +30,13 @@ static const uint32_t rockCategory =  0x1 << 1;
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
         
-        _world = [SKNode node];
-        [self addChild:_world];
+        [self createWorld];
         [self createShip];
     }
     return self;
 }
 
--(void)update:(CFTimeInterval)currentTime {
+- (void)update:(CFTimeInterval)currentTime {
     
     if (!_isGameOver) {
         NSInteger lowerBound = 0;
@@ -47,10 +46,15 @@ static const uint32_t rockCategory =  0x1 << 1;
         if (rndValue == 3) {
             [self createRock];
         }
-        
-        // propel ship based on blow level
-        // -- make the world move down faster
+
+        if (_world.speed > 0.0) {
+            _world.speed = _world.speed - 0.0005;
+        }
     }
+}
+
+- (void)setBlowLevel:(CGFloat)blowLevel {
+    _world.speed = blowLevel;
 }
 
 #pragma mark - SKPhysicsContactDelegate
@@ -90,6 +94,12 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 #pragma mark - Internal Methods
+
+- (void)createWorld {
+    _world = [SKNode node];
+    _world.speed = 0.0;
+    [self addChild:_world];
+}
 
 - (void)createShip {
     SKSpriteNode *ship = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];

@@ -74,7 +74,6 @@
 #pragma mark - ARAudioRecognizerDelegate
 
 - (void)audioRecognized:(ARAudioRecognizer *)recognizer {
-    NSLog(@"lowpass %f", recognizer.lowPassResults);
     _scene.blowLevel = recognizer.lowPassResults;
 }
 
@@ -83,7 +82,7 @@
 - (void)handleRestart:(id)sender {
     
     [_restartButton removeFromSuperview];
-//    _audioRecognizer = nil;
+    _audioRecognizer = nil;
     
     [self viewDidLoad];
 }
