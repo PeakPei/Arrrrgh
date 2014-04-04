@@ -88,7 +88,8 @@ static const uint32_t rockCategory =  0x1 << 1;
         [_ship runAction:sequence];
         
         // move the world
-        SKAction *moveAcross = [SKAction moveByX:distance y:0.0 duration:0.25];
+        CGVector directionVector = CGVectorMake(distance * cosf(angle), distance * sinf(angle));
+        SKAction *moveAcross = [SKAction moveBy:directionVector duration:0.25];
         [_world runAction:moveAcross];
     }
 }
