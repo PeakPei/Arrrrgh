@@ -8,13 +8,20 @@
 
 #import "CJMyScene.h"
 
+#include <stdlib.h>
 #import "CJScrollingNode.h"
 #import "CJShipNode.h"
 
 static const uint32_t shipCategory =  0x1 << 0;
 static const uint32_t rockCategory =  0x1 << 1;
 
-#define kCanalScrollingSpeed 3
+#define WIDTH(view) view.frame.size.width
+#define HEIGHT(view) view.frame.size.height
+#define X(view) view.frame.origin.x
+#define Y(view) view.frame.origin.y
+
+#define kCanalScrollingSpeed   3
+#define kHorizontalGapSize     100
 
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
@@ -25,6 +32,9 @@ static const uint32_t rockCategory =  0x1 << 1;
     CJScrollingNode *_canalRight;
     
     BOOL _isGameOver;
+    
+    CFTimeInterval _lastUpdateTimeInterval;
+    CFTimeInterval _lastSpawnTimeInterval;
 }
 
 @end
@@ -45,17 +55,18 @@ static const uint32_t rockCategory =  0x1 << 1;
     return self;
 }
 
+- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
+    
+    _lastSpawnTimeInterval += timeSinceLast;
+    if (_lastSpawnTimeInterval > 1) {
+        _lastSpawnTimeInterval = 0;
+        [self createBridge];
+    }
+}
+
 - (void)update:(CFTimeInterval)currentTime {
     
     if (!_isGameOver) {
-//        NSInteger lowerBound = 0;
-//        NSInteger upperBound = 200;
-//        NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
-//        
-//        if (rndValue == 3) {
-//            [self createRock];
-//        }
-
         if (_world.speed > 0.0) {
             _world.speed = _world.speed - 0.0005;
         }
@@ -63,6 +74,16 @@ static const uint32_t rockCategory =  0x1 << 1;
         [_canalLeft update:currentTime];
         [_canalRight update:currentTime];
     }
+    
+    // Handle time delta.
+    // If we drop below 60fps, we still want everything to move the same distance.
+    CFTimeInterval timeSinceLast = currentTime - _lastUpdateTimeInterval;
+    _lastUpdateTimeInterval = currentTime;
+    if (timeSinceLast > 1) { // more than a second since last update
+        timeSinceLast = 1.0 / 60.0;
+        _lastUpdateTimeInterval = currentTime;
+    }
+    [self updateWithTimeSinceLastUpdate:timeSinceLast];
 }
 
 - (void)setBlowLevel:(CGFloat)blowLevel {
@@ -103,15 +124,6 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 - (void)createCanal {
-//    floor = [SKScrollingNode scrollingNodeWithImageNamed:@"floor" inContainerWidth:WIDTH(self)];
-//    [floor setScrollingSpeed:FLOOR_SCROLLING_SPEED];
-//    [floor setAnchorPoint:CGPointZero];
-//    [floor setName:@"floor"];
-//    [floor setPhysicsBody:[SKPhysicsBody bodyWithEdgeLoopFromRect:floor.frame]];
-//    floor.physicsBody.categoryBitMask = floorBitMask;
-//    floor.physicsBody.contactTestBitMask = birdBitMask;
-//    [self addChild:floor];
-
     CJScrollingNode *node = [CJScrollingNode scrollingNodeWithImageNamed:@"canal" inContainerHeight:self.frame.size.height atPosX:0.0];
     node.scrollingSpeed = kCanalScrollingSpeed;
     node.anchorPoint = CGPointZero;
@@ -131,7 +143,7 @@ static const uint32_t rockCategory =  0x1 << 1;
 - (void)createShip {
     CJShipNode *node = [CJShipNode spriteNodeWithImageNamed:@"ship"];
     node.position = CGPointMake(CGRectGetMidX(self.frame),
-                                CGRectGetMidY(self.frame) - 50.0);
+                                CGRectGetMidY(self.frame) - 115.0);
 //    ship.size = CGSizeMake(100.0, 100.0);
     
     node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size];
@@ -144,24 +156,29 @@ static const uint32_t rockCategory =  0x1 << 1;
     _ship = node;
 }
 
-- (void)createRock {
-    SKSpriteNode *rock = [SKSpriteNode spriteNodeWithImageNamed:@"rock"];
-    rock.name = @"rock";
+- (void)createBridge {
+
+    SKNode *bridge = [SKNode node];
+    bridge.name = @"bridge";
     
-    NSInteger lowerBound = 0;
-    NSInteger upperBound = 320;
-    NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
-    rock.position = CGPointMake(rndValue, 560.0);
+    SKSpriteNode *leftNode = [SKSpriteNode spriteNodeWithImageNamed:@"bridge_left"];
+    leftNode.anchorPoint = CGPointZero;
     
-    rock.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:rock.size];
-    rock.physicsBody.categoryBitMask = rockCategory;
-    rock.physicsBody.contactTestBitMask = shipCategory;
-    rock.physicsBody.collisionBitMask = 0;
+    NSInteger variance = [self randomNumberBetween:150 to:250];
+    leftNode.position = CGPointMake(-variance, 568);
+    leftNode.zPosition = -1.0;
+    [bridge addChild:leftNode];
+
+    SKSpriteNode *rightNode = [SKSpriteNode spriteNodeWithImageNamed:@"bridge_right"];
+    rightNode.anchorPoint = CGPointZero;
+    rightNode.position = CGPointMake(leftNode.position.x + WIDTH(leftNode) + kHorizontalGapSize, 568);
+    rightNode.zPosition = -1.0;
+    [bridge addChild:rightNode];
     
-    SKAction *moveDown = [SKAction moveByX:0.0 y:(-560.0 - rock.size.height) duration:3.0];
-    [rock runAction:moveDown];
+    [self addChild:bridge];
     
-    [_world addChild:rock];
+    SKAction *moveDown = [SKAction moveByX:0.0 y:-(568.0 + HEIGHT(leftNode)) duration:kCanalScrollingSpeed];
+    [bridge runAction:moveDown];
 }
 
 - (void)gameOver {
@@ -169,6 +186,11 @@ static const uint32_t rockCategory =  0x1 << 1;
     _isGameOver = YES;
     self.paused = YES;
     [self.vc showGameOver];
+}
+
+- (int)randomNumberBetween:(int)from to:(int)to {
+    
+    return (int)from + arc4random() % (to-from+1);
 }
 
 @end
