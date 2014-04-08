@@ -140,10 +140,10 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 - (void)createShip {
-    SKSpriteNode *ship = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
+    SKSpriteNode *ship = [SKSpriteNode spriteNodeWithImageNamed:@"ship"];
     ship.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 50.0);
-    ship.size = CGSizeMake(100.0, 100.0);
+//    ship.size = CGSizeMake(100.0, 100.0);
     
     ship.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:50.0];
     ship.physicsBody.categoryBitMask = shipCategory;
