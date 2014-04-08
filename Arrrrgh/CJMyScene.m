@@ -9,6 +9,7 @@
 #import "CJMyScene.h"
 
 #import "CJScrollingNode.h"
+#import "CJShipNode.h"
 
 static const uint32_t shipCategory =  0x1 << 0;
 static const uint32_t rockCategory =  0x1 << 1;
@@ -17,7 +18,7 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
-    SKNode *_ship;
+    CJShipNode *_ship;
     SKNode *_world;
     
     CJScrollingNode *_canalLeft;
@@ -47,13 +48,13 @@ static const uint32_t rockCategory =  0x1 << 1;
 - (void)update:(CFTimeInterval)currentTime {
     
     if (!_isGameOver) {
-        NSInteger lowerBound = 0;
-        NSInteger upperBound = 200;
-        NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
-        
-        if (rndValue == 3) {
-            [self createRock];
-        }
+//        NSInteger lowerBound = 0;
+//        NSInteger upperBound = 200;
+//        NSInteger rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
+//        
+//        if (rndValue == 3) {
+//            [self createRock];
+//        }
 
         if (_world.speed > 0.0) {
             _world.speed = _world.speed - 0.0005;
@@ -83,25 +84,13 @@ static const uint32_t rockCategory =  0x1 << 1;
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
         
-        CGFloat angle;
-        CGFloat distance = 20.0;
-        if (location.x < CGRectGetMidX(self.frame)) {
+        if (location.x < CGRectGetMidX(_ship.frame)) {
             // detected left side touch
-            angle = M_PI/4.0;
+            [_ship moveLeft];
         }
         else {
-            angle = -M_PI/4.0;
-            distance = -distance;
+            [_ship moveRight];
         }
-        SKAction *rotate     = [SKAction rotateByAngle:angle duration:0.5];
-        SKAction *undoRotate = [SKAction rotateByAngle:-angle duration:0.5];
-        SKAction *sequence   = [SKAction sequence:@[rotate, undoRotate]];
-        [_ship runAction:sequence];
-        
-        // move the world
-        CGVector directionVector = CGVectorMake(distance * cosf(angle), distance * sinf(angle));
-        SKAction *moveAcross = [SKAction moveBy:directionVector duration:0.25];
-        [_world runAction:moveAcross];
     }
 }
 
@@ -140,19 +129,19 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 - (void)createShip {
-    SKSpriteNode *ship = [SKSpriteNode spriteNodeWithImageNamed:@"ship"];
-    ship.position = CGPointMake(CGRectGetMidX(self.frame),
+    CJShipNode *node = [CJShipNode spriteNodeWithImageNamed:@"ship"];
+    node.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 50.0);
 //    ship.size = CGSizeMake(100.0, 100.0);
     
-    ship.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:50.0];
-    ship.physicsBody.categoryBitMask = shipCategory;
-    ship.physicsBody.contactTestBitMask = rockCategory;
-    ship.physicsBody.collisionBitMask = 0;
-    ship.physicsBody.dynamic = NO;
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size];
+    node.physicsBody.categoryBitMask = shipCategory;
+    node.physicsBody.contactTestBitMask = rockCategory;
+    node.physicsBody.collisionBitMask = 0;
+    node.physicsBody.dynamic = NO;
     
-    [self addChild:ship];
-    _ship = ship;
+    [self addChild:node];
+    _ship = node;
 }
 
 - (void)createRock {

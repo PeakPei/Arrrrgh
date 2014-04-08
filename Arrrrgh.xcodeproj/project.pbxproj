@@ -17,7 +17,6 @@
 		9D3AAD1318EC8EE000F4946C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D3AAD1118EC8EE000F4946C /* Main.storyboard */; };
 		9D3AAD1618EC8EE000F4946C /* CJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3AAD1518EC8EE000F4946C /* CJViewController.m */; };
 		9D3AAD1918EC8EE000F4946C /* CJMyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3AAD1818EC8EE000F4946C /* CJMyScene.m */; };
-		9D3AAD1B18EC8EE000F4946C /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D3AAD1A18EC8EE000F4946C /* Spaceship.png */; };
 		9D3AAD1D18EC8EE000F4946C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D3AAD1C18EC8EE000F4946C /* Images.xcassets */; };
 		9D3AAD2418EC8EE000F4946C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D3AAD2318EC8EE000F4946C /* XCTest.framework */; };
 		9D3AAD2518EC8EE000F4946C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D3AACFD18EC8EE000F4946C /* Foundation.framework */; };
@@ -26,6 +25,7 @@
 		9D3AAD3018EC8EE000F4946C /* ArrrrghTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3AAD2F18EC8EE000F4946C /* ArrrrghTests.m */; };
 		9D88BDEE18EE140000A4BDFB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D88BDED18EE140000A4BDFB /* AVFoundation.framework */; };
 		9D88BDF218EF72A500A4BDFB /* CJScrollingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D88BDF118EF72A500A4BDFB /* CJScrollingNode.m */; };
+		9D88BDF518F48CC700A4BDFB /* CJShipNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D88BDF418F48CC700A4BDFB /* CJShipNode.m */; };
 		9DFE2A9018ECE8CC00AB51D4 /* ARAudioRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE2A8E18ECE8CC00AB51D4 /* ARAudioRecognizer.m */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +56,6 @@
 		9D3AAD1518EC8EE000F4946C /* CJViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJViewController.m; sourceTree = "<group>"; };
 		9D3AAD1718EC8EE000F4946C /* CJMyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJMyScene.h; sourceTree = "<group>"; };
 		9D3AAD1818EC8EE000F4946C /* CJMyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJMyScene.m; sourceTree = "<group>"; };
-		9D3AAD1A18EC8EE000F4946C /* Spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spaceship.png; sourceTree = "<group>"; };
 		9D3AAD1C18EC8EE000F4946C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D3AAD2218EC8EE000F4946C /* ArrrrghTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArrrrghTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3AAD2318EC8EE000F4946C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -66,6 +65,8 @@
 		9D88BDED18EE140000A4BDFB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9D88BDF018EF72A500A4BDFB /* CJScrollingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJScrollingNode.h; sourceTree = "<group>"; };
 		9D88BDF118EF72A500A4BDFB /* CJScrollingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJScrollingNode.m; sourceTree = "<group>"; };
+		9D88BDF318F48CC700A4BDFB /* CJShipNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJShipNode.h; sourceTree = "<group>"; };
+		9D88BDF418F48CC700A4BDFB /* CJShipNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJShipNode.m; sourceTree = "<group>"; };
 		9DFE2A8D18ECE8CC00AB51D4 /* ARAudioRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAudioRecognizer.h; sourceTree = "<group>"; };
 		9DFE2A8E18ECE8CC00AB51D4 /* ARAudioRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAudioRecognizer.m; sourceTree = "<group>"; };
 		9DFE2A8F18ECE8CC00AB51D4 /* ARAudioRecognizerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAudioRecognizerDelegate.h; sourceTree = "<group>"; };
@@ -140,11 +141,12 @@
 				9D3AAD1518EC8EE000F4946C /* CJViewController.m */,
 				9D3AAD1718EC8EE000F4946C /* CJMyScene.h */,
 				9D3AAD1818EC8EE000F4946C /* CJMyScene.m */,
-				9D3AAD1A18EC8EE000F4946C /* Spaceship.png */,
 				9D3AAD1C18EC8EE000F4946C /* Images.xcassets */,
 				9D3AAD0618EC8EE000F4946C /* Supporting Files */,
 				9D88BDF018EF72A500A4BDFB /* CJScrollingNode.h */,
 				9D88BDF118EF72A500A4BDFB /* CJScrollingNode.m */,
+				9D88BDF318F48CC700A4BDFB /* CJShipNode.h */,
+				9D88BDF418F48CC700A4BDFB /* CJShipNode.m */,
 			);
 			path = Arrrrgh;
 			sourceTree = "<group>";
@@ -267,7 +269,6 @@
 			files = (
 				9D3AAD0A18EC8EE000F4946C /* InfoPlist.strings in Resources */,
 				9D3AAD1D18EC8EE000F4946C /* Images.xcassets in Resources */,
-				9D3AAD1B18EC8EE000F4946C /* Spaceship.png in Resources */,
 				9D3AAD1318EC8EE000F4946C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,6 +293,7 @@
 				9D88BDF218EF72A500A4BDFB /* CJScrollingNode.m in Sources */,
 				9D3AAD1618EC8EE000F4946C /* CJViewController.m in Sources */,
 				9DFE2A9018ECE8CC00AB51D4 /* ARAudioRecognizer.m in Sources */,
+				9D88BDF518F48CC700A4BDFB /* CJShipNode.m in Sources */,
 				9D3AAD1918EC8EE000F4946C /* CJMyScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
