@@ -12,16 +12,18 @@
 #import "CJScrollingNode.h"
 #import "CJShipNode.h"
 
-static const uint32_t shipCategory =  0x1 << 0;
-static const uint32_t rockCategory =  0x1 << 1;
+static const uint32_t shipCategory     =  0x1 << 0;
+static const uint32_t obstacleCategory =  0x1 << 1;
+static const uint32_t krakenCategory   =  0x1 << 2;
 
 #define WIDTH(view) view.frame.size.width
 #define HEIGHT(view) view.frame.size.height
 #define X(view) view.frame.origin.x
 #define Y(view) view.frame.origin.y
 
-#define kCanalScrollingSpeed   3
-#define kHorizontalGapSize     100
+#define kCanalScrollingSpeed     3
+#define kHorizontalGapSize       100
+#define kSpawnBridgeTimeInterval 1
 
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
@@ -51,17 +53,9 @@ static const uint32_t rockCategory =  0x1 << 1;
         [self createWorld];
         [self createCanal];
         [self createShip];
+//        [self createKraken];
     }
     return self;
-}
-
-- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
-    
-    _lastSpawnTimeInterval += timeSinceLast;
-    if (_lastSpawnTimeInterval > 1) {
-        _lastSpawnTimeInterval = 0;
-        [self createBridge];
-    }
 }
 
 - (void)update:(CFTimeInterval)currentTime {
@@ -94,9 +88,23 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
-        [self gameOver];
-    }
+//    if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
+//        NSLog(@"contact..");
+//    } else {
+//        NSLog(@"contact kraken? bodyA %d bodyB %d", contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask);
+//  
+//        SKNode *kraken;
+//        if ([contact.bodyA.node.name isEqualToString:@"kraken"]) {
+//            kraken = contact.bodyA.node;
+//        } else {
+//            kraken = contact.bodyB.node;
+//        }
+//        // move kraken between bridge
+//        SKAction *move = [SKAction moveByX:100.0 y:0.0 duration:0.25];
+//        [kraken runAction:move];
+//    }
+    
+    [self gameOver];
 }
 
 #pragma mark - UIResponder
@@ -117,6 +125,15 @@ static const uint32_t rockCategory =  0x1 << 1;
 
 #pragma mark - Internal Methods
 
+- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
+    
+    _lastSpawnTimeInterval += timeSinceLast;
+    if (_lastSpawnTimeInterval > kSpawnBridgeTimeInterval) {
+        _lastSpawnTimeInterval = 0;
+        [self createBridge];
+    }
+}
+
 - (void)createWorld {
     _world = [SKNode node];
     _world.speed = 0.0;
@@ -124,31 +141,37 @@ static const uint32_t rockCategory =  0x1 << 1;
 }
 
 - (void)createCanal {
-    CJScrollingNode *node = [CJScrollingNode scrollingNodeWithImageNamed:@"canal" inContainerHeight:self.frame.size.height atPosX:0.0];
+    CJScrollingNode *leftCanal = [self createCanalNodeWithImage:@"canal" atPosx:0.0];
+    [self addChild:leftCanal];
+    _canalLeft = leftCanal;
+    
+    CJScrollingNode *rightCanal = [self createCanalNodeWithImage:@"canal_right" atPosx:298.0];
+    [self addChild:rightCanal];
+    _canalRight = rightCanal;
+}
+
+- (CJScrollingNode *)createCanalNodeWithImage:(NSString *)name atPosx:(CGFloat)x {
+    
+    CJScrollingNode *node = [CJScrollingNode scrollingNodeWithImageNamed:name inContainerHeight:HEIGHT(self) atPosX:x];
     node.scrollingSpeed = kCanalScrollingSpeed;
     node.anchorPoint = CGPointZero;
-    node.name = @"canalLeft";
-//    node.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:node.frame];
-    [self addChild:node];
-    _canalLeft = node;
+    node.name = name;
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size center:CGPointMake(WIDTH(node)/2, HEIGHT(node)/2)];
+    node.physicsBody.categoryBitMask = obstacleCategory;
+    node.physicsBody.contactTestBitMask = shipCategory;
+    node.physicsBody.collisionBitMask = 0;
     
-    CJScrollingNode *node2 = [CJScrollingNode scrollingNodeWithImageNamed:@"canal_right" inContainerHeight:self.frame.size.height atPosX:298.0];
-    node2.scrollingSpeed = kCanalScrollingSpeed;
-    node2.anchorPoint = CGPointZero;
-    node2.name = @"canalRight";
-    [self addChild:node2];
-    _canalRight = node2;
+    return node;
 }
 
 - (void)createShip {
     CJShipNode *node = [CJShipNode spriteNodeWithImageNamed:@"ship"];
     node.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 115.0);
-//    ship.size = CGSizeMake(100.0, 100.0);
     
     node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size];
     node.physicsBody.categoryBitMask = shipCategory;
-    node.physicsBody.contactTestBitMask = rockCategory;
+    node.physicsBody.contactTestBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
     node.physicsBody.dynamic = NO;
     
@@ -156,29 +179,53 @@ static const uint32_t rockCategory =  0x1 << 1;
     _ship = node;
 }
 
+- (void)createKraken {
+    SKSpriteNode *node = [SKSpriteNode spriteNodeWithImageNamed:@"kraken"];
+    node.name = @"kraken";
+    node.position = CGPointMake(CGRectGetMidX(self.frame),
+                                CGRectGetMidY(self.frame) - 295.0);
+    node.size = CGSizeMake(150.0, 150.0);
+    
+    node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:WIDTH(node)/2];
+    node.physicsBody.categoryBitMask = krakenCategory;
+    node.physicsBody.contactTestBitMask = obstacleCategory;
+    node.physicsBody.collisionBitMask = 0;
+    
+    [self addChild:node];
+}
+
 - (void)createBridge {
 
     SKNode *bridge = [SKNode node];
     bridge.name = @"bridge";
-    
-    SKSpriteNode *leftNode = [SKSpriteNode spriteNodeWithImageNamed:@"bridge_left"];
-    leftNode.anchorPoint = CGPointZero;
-    
+
     NSInteger variance = [self randomNumberBetween:150 to:250];
-    leftNode.position = CGPointMake(-variance, 568);
-    leftNode.zPosition = -1.0;
+    CGPoint point = CGPointMake(-variance, HEIGHT(self));
+    SKSpriteNode *leftNode = [self createBridgeWithImageName:@"bridge_left" atPoint:point];
     [bridge addChild:leftNode];
 
-    SKSpriteNode *rightNode = [SKSpriteNode spriteNodeWithImageNamed:@"bridge_right"];
-    rightNode.anchorPoint = CGPointZero;
-    rightNode.position = CGPointMake(leftNode.position.x + WIDTH(leftNode) + kHorizontalGapSize, 568);
-    rightNode.zPosition = -1.0;
+    point = CGPointMake(leftNode.position.x + WIDTH(leftNode) + kHorizontalGapSize, HEIGHT(self));
+    SKSpriteNode *rightNode = [self createBridgeWithImageName:@"bridge_right" atPoint:point];
     [bridge addChild:rightNode];
     
     [self addChild:bridge];
     
-    SKAction *moveDown = [SKAction moveByX:0.0 y:-(568.0 + HEIGHT(leftNode)) duration:kCanalScrollingSpeed];
+    SKAction *moveDown = [SKAction moveByX:0.0 y:-(HEIGHT(self) + HEIGHT(leftNode)) duration:kCanalScrollingSpeed];
     [bridge runAction:moveDown];
+}
+
+- (SKSpriteNode *)createBridgeWithImageName:(NSString *)name atPoint:(CGPoint)point {
+
+    SKSpriteNode *node = [SKSpriteNode spriteNodeWithImageNamed:name];
+    node.anchorPoint = CGPointZero;
+    node.zPosition = -1.0;
+    node.position = point;
+    
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size center:CGPointMake(WIDTH(node)/2, HEIGHT(node)/2)];
+    node.physicsBody.categoryBitMask = obstacleCategory;
+    node.physicsBody.collisionBitMask = 0;
+    
+    return node;
 }
 
 - (void)gameOver {

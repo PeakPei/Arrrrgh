@@ -23,6 +23,7 @@
 		9D3AAD2618EC8EE000F4946C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D3AAD0118EC8EE000F4946C /* UIKit.framework */; };
 		9D3AAD2E18EC8EE000F4946C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9D3AAD2C18EC8EE000F4946C /* InfoPlist.strings */; };
 		9D3AAD3018EC8EE000F4946C /* ArrrrghTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3AAD2F18EC8EE000F4946C /* ArrrrghTests.m */; };
+		9D799A1018F5E9050033AD90 /* SpriteKit+QuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D799A0F18F5E9050033AD90 /* SpriteKit+QuickLook.m */; };
 		9D88BDEE18EE140000A4BDFB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D88BDED18EE140000A4BDFB /* AVFoundation.framework */; };
 		9D88BDF218EF72A500A4BDFB /* CJScrollingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D88BDF118EF72A500A4BDFB /* CJScrollingNode.m */; };
 		9D88BDF518F48CC700A4BDFB /* CJShipNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D88BDF418F48CC700A4BDFB /* CJShipNode.m */; };
@@ -62,6 +63,8 @@
 		9D3AAD2B18EC8EE000F4946C /* ArrrrghTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArrrrghTests-Info.plist"; sourceTree = "<group>"; };
 		9D3AAD2D18EC8EE000F4946C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9D3AAD2F18EC8EE000F4946C /* ArrrrghTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArrrrghTests.m; sourceTree = "<group>"; };
+		9D799A0E18F5E9050033AD90 /* SpriteKit+QuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpriteKit+QuickLook.h"; sourceTree = "<group>"; };
+		9D799A0F18F5E9050033AD90 /* SpriteKit+QuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SpriteKit+QuickLook.m"; sourceTree = "<group>"; };
 		9D88BDED18EE140000A4BDFB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9D88BDF018EF72A500A4BDFB /* CJScrollingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJScrollingNode.h; sourceTree = "<group>"; };
 		9D88BDF118EF72A500A4BDFB /* CJScrollingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJScrollingNode.m; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 		9DFE2A8C18ECE8CC00AB51D4 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				9D799A0E18F5E9050033AD90 /* SpriteKit+QuickLook.h */,
+				9D799A0F18F5E9050033AD90 /* SpriteKit+QuickLook.m */,
 				9DFE2A8D18ECE8CC00AB51D4 /* ARAudioRecognizer.h */,
 				9DFE2A8E18ECE8CC00AB51D4 /* ARAudioRecognizer.m */,
 				9DFE2A8F18ECE8CC00AB51D4 /* ARAudioRecognizerDelegate.h */,
@@ -292,6 +297,7 @@
 				9D3AAD1018EC8EE000F4946C /* CJAppDelegate.m in Sources */,
 				9D88BDF218EF72A500A4BDFB /* CJScrollingNode.m in Sources */,
 				9D3AAD1618EC8EE000F4946C /* CJViewController.m in Sources */,
+				9D799A1018F5E9050033AD90 /* SpriteKit+QuickLook.m in Sources */,
 				9DFE2A9018ECE8CC00AB51D4 /* ARAudioRecognizer.m in Sources */,
 				9D88BDF518F48CC700A4BDFB /* CJShipNode.m in Sources */,
 				9D3AAD1918EC8EE000F4946C /* CJMyScene.m in Sources */,
