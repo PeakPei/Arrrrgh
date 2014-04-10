@@ -53,7 +53,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
         [self createWorld];
         [self createCanal];
         [self createShip];
-//        [self createKraken];
+        [self createKraken];
     }
     return self;
 }
@@ -88,23 +88,29 @@ static const uint32_t krakenCategory   =  0x1 << 2;
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-//    if (contact.bodyA.categoryBitMask > contact.bodyB.categoryBitMask) {
-//        NSLog(@"contact..");
-//    } else {
-//        NSLog(@"contact kraken? bodyA %d bodyB %d", contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask);
-//  
-//        SKNode *kraken;
-//        if ([contact.bodyA.node.name isEqualToString:@"kraken"]) {
-//            kraken = contact.bodyA.node;
-//        } else {
-//            kraken = contact.bodyB.node;
-//        }
-//        // move kraken between bridge
-//        SKAction *move = [SKAction moveByX:100.0 y:0.0 duration:0.25];
-//        [kraken runAction:move];
-//    }
+    SKPhysicsBody *firstBody, *secondBody;
     
-    [self gameOver];
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask) {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    } else {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    }
+    
+    if ((firstBody.categoryBitMask & krakenCategory) != 0) {
+        // when does this happen?
+    }
+    if ((secondBody.categoryBitMask & krakenCategory) != 0) {
+        [self moveKraken:secondBody.node withBridgeSection:firstBody.node];
+    }
+
+    if ((firstBody.categoryBitMask & shipCategory) != 0) {
+        [self gameOver];
+    }
+    if ((secondBody.categoryBitMask & shipCategory) != 0) {
+        // when does this happen?
+    }
 }
 
 #pragma mark - UIResponder
@@ -124,6 +130,17 @@ static const uint32_t krakenCategory   =  0x1 << 2;
 }
 
 #pragma mark - Internal Methods
+
+// move kraken between bridge
+- (void)moveKraken:(SKNode *)kraken withBridgeSection:(SKNode *)section {
+    
+    SKNode *parent = section.parent;
+    SKNode *left = [parent childNodeWithName:@"bridge_left"];
+    CGFloat middleX = left.position.x + WIDTH(left) + kHorizontalGapSize/2;
+    
+    SKAction *move = [SKAction moveToX:middleX duration:0.15];
+    [kraken runAction:move];
+}
 
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
     
@@ -166,6 +183,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
 
 - (void)createShip {
     CJShipNode *node = [CJShipNode spriteNodeWithImageNamed:@"ship"];
+    node.name = @"ship";
     node.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 115.0);
     
@@ -186,7 +204,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
                                 CGRectGetMidY(self.frame) - 295.0);
     node.size = CGSizeMake(150.0, 150.0);
     
-    node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:WIDTH(node)/2];
+    node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:WIDTH(node)/1.5];
     node.physicsBody.categoryBitMask = krakenCategory;
     node.physicsBody.contactTestBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
@@ -217,6 +235,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
 - (SKSpriteNode *)createBridgeWithImageName:(NSString *)name atPoint:(CGPoint)point {
 
     SKSpriteNode *node = [SKSpriteNode spriteNodeWithImageNamed:name];
+    node.name = name;
     node.anchorPoint = CGPointZero;
     node.zPosition = -1.0;
     node.position = point;
