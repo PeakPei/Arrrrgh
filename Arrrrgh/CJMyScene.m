@@ -24,6 +24,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
 #define kCanalScrollingSpeed     3
 #define kHorizontalGapSize       100
 #define kSpawnBridgeTimeInterval 1
+#define kKrakenSuckingPower      0.05
 
 @interface CJMyScene () <SKPhysicsContactDelegate> {
     
@@ -47,10 +48,10 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     if (self = [super initWithSize:size]) {
         
         self.backgroundColor = [SKColor colorWithRed:0.16 green:0.65 blue:0.84 alpha:1.0];
-        self.physicsWorld.gravity = CGVectorMake(0, 0);
+        self.physicsWorld.gravity = CGVectorMake(0, -kKrakenSuckingPower);
         self.physicsWorld.contactDelegate = self;
         
-        [self createWorld];
+//        [self createWorld];
         [self createCanal];
         [self createShip];
         [self createKraken];
@@ -140,6 +141,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     
     SKAction *move = [SKAction moveToX:middleX duration:0.15];
     [kraken runAction:move];
+//    self.physicsWorld.gravity = CGVectorMake(middleX, -kKrakenSuckingPower);
 }
 
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
@@ -177,6 +179,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     node.physicsBody.categoryBitMask = obstacleCategory;
     node.physicsBody.contactTestBitMask = shipCategory;
     node.physicsBody.collisionBitMask = 0;
+    node.physicsBody.affectedByGravity = NO;
     
     return node;
 }
@@ -187,11 +190,10 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     node.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 115.0);
     
-    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size];
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(node.size.width-20.0, node.size.height)];
     node.physicsBody.categoryBitMask = shipCategory;
     node.physicsBody.contactTestBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
-    node.physicsBody.dynamic = NO;
     
     [self addChild:node];
     _ship = node;
@@ -201,13 +203,14 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     SKSpriteNode *node = [SKSpriteNode spriteNodeWithImageNamed:@"kraken"];
     node.name = @"kraken";
     node.position = CGPointMake(CGRectGetMidX(self.frame),
-                                CGRectGetMidY(self.frame) - 295.0);
+                                CGRectGetMidY(self.frame) - 305.0);
     node.size = CGSizeMake(150.0, 150.0);
     
     node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:WIDTH(node)/1.5];
     node.physicsBody.categoryBitMask = krakenCategory;
     node.physicsBody.contactTestBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
+    node.physicsBody.affectedByGravity = NO;
     
     [self addChild:node];
 }
@@ -243,6 +246,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:node.size center:CGPointMake(WIDTH(node)/2, HEIGHT(node)/2)];
     node.physicsBody.categoryBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
+    node.physicsBody.affectedByGravity = NO;
     
     return node;
 }
