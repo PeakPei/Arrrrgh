@@ -8,8 +8,8 @@
 
 #import "CJShipNode.h"
 
-#define kShipTurnAngle    M_PI/10.0
-#define kShipMoveDistance 20.0
+#define kShipTurnAngle    M_PI/5.0
+#define kShipMoveDistance 10.0
 
 @interface CJShipNode () {
     

@@ -149,7 +149,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     _lastSpawnTimeInterval += timeSinceLast;
     if (_lastSpawnTimeInterval > kSpawnBridgeTimeInterval) {
         _lastSpawnTimeInterval = 0;
-        [self createBridge];
+//        [self createBridge];
     }
 }
 
@@ -224,7 +224,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     
     node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:WIDTH(node)/1.5];
     node.physicsBody.categoryBitMask = krakenCategory;
-    node.physicsBody.contactTestBitMask = obstacleCategory;
+    node.physicsBody.contactTestBitMask = obstacleCategory | shipCategory;
     node.physicsBody.collisionBitMask = 0;
     node.physicsBody.affectedByGravity = NO;
     
