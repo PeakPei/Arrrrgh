@@ -197,6 +197,22 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     
     [self addChild:node];
     _ship = node;
+    
+    [self animateOar];
+}
+
+- (void)animateOar {
+    SKTextureAtlas *shipAnimatedAtlas = [SKTextureAtlas atlasNamed:@"ship"];
+    
+    NSMutableArray *moveFrames = [NSMutableArray array];
+    [moveFrames addObject:[shipAnimatedAtlas textureNamed:@"ship"]];
+    [moveFrames addObject:[shipAnimatedAtlas textureNamed:@"ship_b"]];
+    
+    [_ship runAction:[SKAction repeatActionForever:
+                      [SKAction animateWithTextures:moveFrames
+                                       timePerFrame:0.1f
+                                             resize:NO
+                                            restore:YES]] withKey:@"movingInPlaceShip"];
 }
 
 - (void)createKraken {
