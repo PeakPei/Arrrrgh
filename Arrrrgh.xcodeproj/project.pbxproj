@@ -30,6 +30,7 @@
 		9DFCD2541900640700EA4D28 /* ship.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 9DFCD2531900640700EA4D28 /* ship.atlas */; };
 		9DFCD2561900AFE700EA4D28 /* woosh-01-stereo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9DFCD2551900AFE700EA4D28 /* woosh-01-stereo.wav */; };
 		9DFCD2581900B05800EA4D28 /* woosh-01-stereo-withoutsubbass.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9DFCD2571900B05800EA4D28 /* woosh-01-stereo-withoutsubbass.wav */; };
+		9DFCD25A1900B22300EA4D28 /* select 3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9DFCD2591900B22300EA4D28 /* select 3.wav */; };
 		9DFE2A9018ECE8CC00AB51D4 /* ARAudioRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE2A8E18ECE8CC00AB51D4 /* ARAudioRecognizer.m */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		9DFCD2531900640700EA4D28 /* ship.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = ship.atlas; sourceTree = "<group>"; };
 		9DFCD2551900AFE700EA4D28 /* woosh-01-stereo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "woosh-01-stereo.wav"; sourceTree = "<group>"; };
 		9DFCD2571900B05800EA4D28 /* woosh-01-stereo-withoutsubbass.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "woosh-01-stereo-withoutsubbass.wav"; sourceTree = "<group>"; };
+		9DFCD2591900B22300EA4D28 /* select 3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "select 3.wav"; sourceTree = "<group>"; };
 		9DFE2A8D18ECE8CC00AB51D4 /* ARAudioRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAudioRecognizer.h; sourceTree = "<group>"; };
 		9DFE2A8E18ECE8CC00AB51D4 /* ARAudioRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAudioRecognizer.m; sourceTree = "<group>"; };
 		9DFE2A8F18ECE8CC00AB51D4 /* ARAudioRecognizerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAudioRecognizerDelegate.h; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		9D3AAD0518EC8EE000F4946C /* Arrrrgh */ = {
 			isa = PBXGroup;
 			children = (
+				9DFCD2591900B22300EA4D28 /* select 3.wav */,
 				9DFCD2571900B05800EA4D28 /* woosh-01-stereo-withoutsubbass.wav */,
 				9DFCD2551900AFE700EA4D28 /* woosh-01-stereo.wav */,
 				9DFCD2531900640700EA4D28 /* ship.atlas */,
@@ -284,6 +287,7 @@
 				9D3AAD0A18EC8EE000F4946C /* InfoPlist.strings in Resources */,
 				9DFCD2541900640700EA4D28 /* ship.atlas in Resources */,
 				9D3AAD1D18EC8EE000F4946C /* Images.xcassets in Resources */,
+				9DFCD25A1900B22300EA4D28 /* select 3.wav in Resources */,
 				9D3AAD1318EC8EE000F4946C /* Main.storyboard in Resources */,
 				9DFCD2561900AFE700EA4D28 /* woosh-01-stereo.wav in Resources */,
 				9DFCD2581900B05800EA4D28 /* woosh-01-stereo-withoutsubbass.wav in Resources */,

@@ -15,6 +15,7 @@
 static const uint32_t shipCategory     =  0x1 << 0;
 static const uint32_t obstacleCategory =  0x1 << 1;
 static const uint32_t krakenCategory   =  0x1 << 2;
+static const uint32_t bridgeCategory   =  0x1 << 3;
 
 #define WIDTH(view) view.frame.size.width
 #define HEIGHT(view) view.frame.size.height
