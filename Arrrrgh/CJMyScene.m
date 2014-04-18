@@ -108,7 +108,11 @@ static const uint32_t bridgeCategory   =  0x1 << 3;
     }
 
     if ((firstBody.categoryBitMask & shipCategory) != 0) {
-        [self gameOver];
+        if (secondBody.categoryBitMask == bridgeCategory) {
+            [self runAction:[SKAction playSoundFileNamed:@"select 3.wav" waitForCompletion:NO]];
+        } else {
+            [self gameOver];
+        }
     }
     if ((secondBody.categoryBitMask & shipCategory) != 0) {
         // when does this happen?
@@ -245,6 +249,15 @@ static const uint32_t bridgeCategory   =  0x1 << 3;
     point = CGPointMake(leftNode.position.x + WIDTH(leftNode) + kHorizontalGapSize, HEIGHT(self));
     SKSpriteNode *rightNode = [self createBridgeWithImageName:@"bridge_right" atPoint:point];
     [bridge addChild:rightNode];
+    
+    CGFloat middleX = leftNode.position.x + WIDTH(leftNode) + kHorizontalGapSize/2;
+
+    bridge.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(320.0, HEIGHT(leftNode))
+                                                         center:CGPointMake(middleX, leftNode.position.y + HEIGHT(leftNode)/2)];
+    bridge.physicsBody.categoryBitMask = bridgeCategory;
+    bridge.physicsBody.contactTestBitMask = shipCategory;
+    bridge.physicsBody.collisionBitMask = 0;
+    bridge.physicsBody.affectedByGravity = NO;
     
     [self addChild:bridge];
     
