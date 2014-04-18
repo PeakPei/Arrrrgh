@@ -195,7 +195,7 @@ static const uint32_t bridgeCategory   =  0x1 << 3;
     node.position = CGPointMake(CGRectGetMidX(self.frame),
                                 CGRectGetMidY(self.frame) - 115.0);
     
-    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(node.size.width-20.0, node.size.height)];
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(node.size.width-30.0, node.size.height/2)];
     node.physicsBody.categoryBitMask = shipCategory;
     node.physicsBody.contactTestBitMask = obstacleCategory;
     node.physicsBody.collisionBitMask = 0;
