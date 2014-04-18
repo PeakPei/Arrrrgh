@@ -149,7 +149,7 @@ static const uint32_t krakenCategory   =  0x1 << 2;
     _lastSpawnTimeInterval += timeSinceLast;
     if (_lastSpawnTimeInterval > kSpawnBridgeTimeInterval) {
         _lastSpawnTimeInterval = 0;
-//        [self createBridge];
+        [self createBridge];
     }
 }
 

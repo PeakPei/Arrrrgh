@@ -8,8 +8,8 @@
 
 #import "CJShipNode.h"
 
-#define kShipTurnAngle    M_PI/5.0
-#define kShipMoveDistance 10.0
+#define kShipTurnAngle    M_PI/20.0
+#define kShipMoveDistance 16.0
 
 @interface CJShipNode () {
     
@@ -42,8 +42,9 @@
     CGVector directionVector = CGVectorMake(_distance * cosf(_angle), 0.0);
     SKAction *moveAcross = [SKAction moveBy:directionVector duration:0.25];
     SKAction *moveUp     = [SKAction moveByX:0.0 y:kShipMoveDistance duration:0.25];
+    SKAction *sound      = [SKAction playSoundFileNamed:@"woosh-01-stereo-withoutsubbass.wav" waitForCompletion:NO];
     
-    SKAction *group    = [SKAction group:@[rotate, moveAcross, moveUp]];
+    SKAction *group    = [SKAction group:@[rotate, moveAcross, moveUp, sound]];
     SKAction *sequence = [SKAction sequence:@[group, undoRotate]];
     
     [self runAction:sequence];
